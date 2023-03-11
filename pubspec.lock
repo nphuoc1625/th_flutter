@@ -82,7 +82,7 @@ packages:
     source: sdk
     version: "0.0.0"
   ftoast:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: ftoast
       url: "https://pub.dartlang.org"

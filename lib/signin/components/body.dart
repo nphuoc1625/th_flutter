@@ -16,17 +16,17 @@ class Body extends StatelessWidget {
   Widget headerScreen(BuildContext context){
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height*0.2,
       alignment: Alignment.bottomRight,
-      child: Image.asset("dish.png"),
+      child: Image.asset("assets/dish.png"),
     );
   }
   Widget footerScreen(BuildContext context){
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      alignment: Alignment.bottomRight,
-      child: Image.asset("dish_2.png"),
+      height: MediaQuery.of(context).size.height*0.2,
+      alignment: Alignment.bottomLeft,
+      child: Image.asset("assets/dish_2.png"),
 
     );
   }

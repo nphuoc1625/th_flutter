@@ -34,7 +34,15 @@ class _SignInFormState extends State<SignInForm> {
                   style: TextStyle(color: Colors.green),),
               ],
             ),
-          )
+          ),
+          Padding(padding: EdgeInsets.all(16),
+          child: Container(
+            child: Column(
+              children: [
+                TextFormField()
+              ],
+            ),
+          ),)
         ],
       ),
     ));
