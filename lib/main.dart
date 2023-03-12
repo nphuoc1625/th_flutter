@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:th_flutter/splashpage/splashpage.dart';
 import 'package:th_flutter/routes.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: routes,
       theme: ThemeData(
@@ -30,5 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
