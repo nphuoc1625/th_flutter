@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:th_flutter/signin/signinpage.dart';
+import 'package:th_flutter/signup/components/signup_form.dart';
+import 'package:th_flutter/signup/signuppage.dart';
 import 'package:th_flutter/splashpage/splashpage.dart';
 import 'package:th_flutter/routes.dart';
 
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const SplashPage(),
+      home: const SignInPage(),
     );
   }
 }

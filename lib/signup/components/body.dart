@@ -20,6 +20,7 @@ class _BodyState extends State<Body> {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(children: const [
+            SizedBox(height: 100),
             Text(
               "Register Account",
               style: TextStyle(

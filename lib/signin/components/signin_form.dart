@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:th_flutter/Model/ultilities.dart';
 import 'package:th_flutter/signup/signuppage.dart';
+
+import '../../Model/user.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({Key? key}) : super(key: key);
@@ -54,108 +57,123 @@ class _SignInFormState extends State<SignInForm> {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Container(
-                child: Column(
-                  children: [
-                    TextFormField(
-                      validator: (value) {},
-                      onSaved: (newValue) {},
-                      controller: _username,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Username",
-                          prefixIcon: Icon(Icons.mail)),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      controller: _password,
-                      validator: (value) {},
-                      keyboardType: TextInputType.number,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Password Number",
-                          prefixIcon: Icon(Icons.password_outlined)),
-                    ),
-                    const SizedBox(height: 5),
-                    SizedBox(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: const ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder()),
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.green),
-                        ),
-                        child: const Text(
-                          "Continue",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+              child: Column(
+                children: [
+                  TextFormField(
+                    validator: (value) {
+                      return Ultilites.validateEmail(_username.text);
+                    },
+                    onSaved: (newValue) {},
+                    controller: _username,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Username",
+                        prefixIcon: Icon(Icons.mail)),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  TextFormField(
+                    controller: _password,
+                    validator: (value) {
+                      return Ultilites.validatePassword(_password.text);
+                    },
+                    keyboardType: TextInputType.number,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Password Number",
+                        prefixIcon: Icon(Icons.password_outlined)),
+                  ),
+                  const SizedBox(height: 5),
+                  SizedBox(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formkey.currentState!.validate()) {
+                          // If the form is valid, display a snackbar. In the real world,
+                          // you'd often call a server or save the information in a database.
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Processing Data')),
+                          );
+                        }
+                      },
+                      style: const ButtonStyle(
+                        shape:
+                            MaterialStatePropertyAll(RoundedRectangleBorder()),
+                        backgroundColor: MaterialStatePropertyAll(Colors.green),
+                      ),
+                      child: const Text(
+                        "Continue",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    const Text(
-                      "Or continue with social media",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.green),
-                    ),
-                    const SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: const BoxDecoration(
-                              color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                          child: SvgPicture.asset("assets/icons/facebook.svg"),
+                  ),
+                  const SizedBox(height: 50),
+                  const Text(
+                    "Or continue with social media",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.green),
+                  ),
+                  const SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+                        child: SvgPicture.asset("assets/icons/facebook.svg"),
+                      ),
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+                        child: SvgPicture.asset("assets/icons/google.svg"),
+                      ),
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+                        child: SvgPicture.asset("assets/icons/twitter.svg"),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have account ?",
+                        style: TextStyle(color: Colors.green, fontSize: 14),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.pushNamed(context, SignUpPage.routeName)
+                              .then((value) {
+                            if (value != null) {
+                              User user = value as User;
+                              _username.text = user.email;
+                              _password.text = user.pass;
+                            }
+                          });
+                        },
+                        child: const Text(
+                          "Sign up",
+                          style:
+                              TextStyle(color: Colors.redAccent, fontSize: 14),
                         ),
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: const BoxDecoration(
-                              color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                          child: SvgPicture.asset("assets/icons/google.svg"),
-                        ),
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: const BoxDecoration(
-                              color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                          child: SvgPicture.asset("assets/icons/twitter.svg"),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Don't have account ?",
-                          style: TextStyle(color: Colors.green, fontSize: 14),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, SignUpPage.routeName)
-                                .then((value) {});
-                          },
-                          child: const Text(
-                            "Sign up",
-                            style: TextStyle(
-                                color: Colors.redAccent, fontSize: 14),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                      )
+                    ],
+                  )
+                ],
               ),
             )
           ],
