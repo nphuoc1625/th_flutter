@@ -1,5 +1,3 @@
-import 'dart:js_util';
-
 class Ultilites {
   static String? validateEmail(String email) {
     if (email.isEmpty) {
@@ -26,7 +24,7 @@ class Ultilites {
   }
 
   static String? conformPassword(String password, String conformPassword) {
-    if (notEqual(password, conformPassword)) {
+    if (password != conformPassword) {
       return "Conform password not match";
     }
     return null;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:th_flutter/signin/signinpage.dart';
-import 'package:th_flutter/signup/components/signup_form.dart';
-import 'package:th_flutter/signup/signuppage.dart';
-import 'package:th_flutter/splashpage/splashpage.dart';
 import 'package:th_flutter/routes.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:th_flutter/splashpage/splashpage.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const SignInPage(),
+      home: const SplashPage(),
     );
   }
 }

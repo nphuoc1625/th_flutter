@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:th_flutter/Model/ultilities.dart';
 import 'package:th_flutter/signup/signuppage.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../Model/user.dart';
+import '../../homepage/homepage.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({Key? key}) : super(key: key);
@@ -16,8 +18,6 @@ class SignInForm extends StatefulWidget {
 class _SignInFormState extends State<SignInForm> {
   final _formkey = GlobalKey<FormState>();
   bool value = false;
-
-  var prefs;
 
   final _username = TextEditingController();
   final _password = TextEditingController();
@@ -92,11 +92,10 @@ class _SignInFormState extends State<SignInForm> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formkey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing Data')),
                           );
+                          onclickLogin(context);
                         }
                       },
                       style: const ButtonStyle(
@@ -120,32 +119,32 @@ class _SignInFormState extends State<SignInForm> {
                     style: TextStyle(color: Colors.green),
                   ),
                   const SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: const BoxDecoration(
-                            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                        child: SvgPicture.asset("assets/icons/facebook.svg"),
-                      ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: const BoxDecoration(
-                            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                        child: SvgPicture.asset("assets/icons/google.svg"),
-                      ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: const BoxDecoration(
-                            color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-                        child: SvgPicture.asset("assets/icons/twitter.svg"),
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Container(
+                  //       height: 40,
+                  //       width: 40,
+                  //       decoration: const BoxDecoration(
+                  //           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+                  //       child: SvgPicture.asset("assets/icons/facebook.svg"),
+                  //     ),
+                  //     Container(
+                  //       height: 40,
+                  //       width: 40,
+                  //       decoration: const BoxDecoration(
+                  //           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+                  //       child: SvgPicture.asset("assets/icons/google.svg"),
+                  //     ),
+                  //     Container(
+                  //       height: 40,
+                  //       width: 40,
+                  //       decoration: const BoxDecoration(
+                  //           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
+                  //       child: SvgPicture.asset("assets/icons/twitter.svg"),
+                  //     )
+                  //   ],
+                  // ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +158,7 @@ class _SignInFormState extends State<SignInForm> {
                           Navigator.pushNamed(context, SignUpPage.routeName)
                               .then((value) {
                             if (value != null) {
-                              User user = value as User;
+                              MyUser user = value as MyUser;
                               _username.text = user.email;
                               _password.text = user.pass;
                             }
@@ -179,4 +178,34 @@ class _SignInFormState extends State<SignInForm> {
           ],
         ));
   }
+
+  void onclickLogin(BuildContext context) async {
+    try {
+      UserCredential credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _username.text, password: _password.text);
+      if (credential.user != null && mounted) {
+        Navigator.pushNamed(context, HomePage.routeName).then((value) {
+          MyUser user = value as MyUser;
+          _username.text = user.email;
+          _password.text = user.pass;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$e')),
+        );
+      }
+    }
+  }
+//   invalid-email:
+// Thrown if the email address is not valid.
+// user-disabled:
+// Thrown if the user corresponding to the given email has been disabled.
+// user-not-found:
+// Thrown if there is no user corresponding to the given email.
+// wrong-password:
+// Thrown if the password is invalid for the given email, or the account corresponding to the email does not have a password set.
 }

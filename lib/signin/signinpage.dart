@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../homepage/homepage.dart';
 import 'components/body.dart';
 
 class SignInPage extends StatefulWidget {
@@ -11,6 +13,20 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.signOut();
+    checkIfUserLoggedIn();
+  }
+
+  void checkIfUserLoggedIn() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, HomePage.routeName, (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

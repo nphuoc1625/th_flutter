@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ftoast/ftoast.dart';
 import 'package:th_flutter/Model/user.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../Model/ultilities.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -40,7 +43,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 child: ElevatedButton(
                     onPressed: () {
                       if (_formkey.currentState!.validate()) {
-                        Navigator.pop(context, User(email.text, password.text));
+                        onClickRegister(context);
                       }
                     },
                     style: ButtonStyle(
@@ -134,5 +137,23 @@ class _SignUpFormState extends State<SignUpForm> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           prefixIcon: Icon(Icons.password)),
     );
+  }
+
+  onClickRegister(BuildContext context) async {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    try {
+      UserCredential credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: email.text, password: password.text);
+
+      if (credential.user != null && mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Register Success")));
+        Navigator.pop(context, MyUser(email.text, password.text));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("$e.mess")));
+    }
   }
 }

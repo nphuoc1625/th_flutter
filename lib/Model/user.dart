@@ -1,5 +1,5 @@
-class User {
+class MyUser {
   final String email;
   final String pass;
-  User(this.email, this.pass);
+  MyUser(this.email, this.pass);
 }
