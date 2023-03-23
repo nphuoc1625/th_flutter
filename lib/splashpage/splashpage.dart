@@ -1,13 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../homepage/homepage.dart';
+import '../signin/signinpage.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
 
+  void checkIfUserLoggedIn(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, HomePage.routeName, (route) => false);
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+          context, SignInPage.routeName, (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //  Future.delayed(const Duration(seconds: 3),() {
-    //   Navigator.pushNamedAndRemoveUntil(context, SignInPage.routeName, (route) => false);
-    // }, );
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        checkIfUserLoggedIn(context);
+      },
+    );
     return Scaffold(
         body: SafeArea(
             child: Container(

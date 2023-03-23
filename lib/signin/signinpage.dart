@@ -16,19 +16,19 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.signOut();
-    checkIfUserLoggedIn();
   }
 
-  void checkIfUserLoggedIn() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, HomePage.routeName, (route) => false);
+  void checkIfUserLoggedIn(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.pushNamed(context, HomePage.routeName);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => checkIfUserLoggedIn(context));
     return const Scaffold(
       resizeToAvoidBottomInset: false,
       body: Body(),

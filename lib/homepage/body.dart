@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:th_flutter/homepage/components/account.dart';
 import 'package:th_flutter/homepage/components/favorite.dart';
-import 'package:th_flutter/homepage/components/home.dart';
+import 'package:th_flutter/homepage/components/home/home.dart';
 import 'package:th_flutter/homepage/components/notification.dart';
 
 import 'headers/homeheader.dart';
@@ -17,7 +17,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   var flag = true;
 
-  var _index = 1;
+  var _index = 0;
   final List<Widget> _body = const [
     HomeScreen(),
     FavoriteScreen(),
@@ -29,8 +29,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: flag ? Colors.white : Colors.blue,
         automaticallyImplyLeading: false,
         title: flag ? const HomeHeader() : const MenuHeader(),
       ),

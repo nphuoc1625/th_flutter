@@ -8,7 +8,12 @@ class MenuHeader extends StatelessWidget {
     return Row(
       children: [
         const Expanded(child: Text("Account Info")),
-        TextButton(onPressed: () {}, child: const Text("Save"))
+        TextButton(
+            onPressed: () {},
+            child: const Text(
+              "Save",
+              style: TextStyle(color: Colors.white),
+            ))
       ],
     );
   }
