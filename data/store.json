@@ -1,0 +1,66 @@
+{
+    "store": [
+        {
+            "id": 1,
+            "title": "CircleK",
+            "imageName": "ciclek.png"
+        },
+        {
+            "id": 1,
+            "title": "MiniStop",
+            "imageName": "ministop.png"
+        },
+        {
+            "id": 1,
+            "title": "GS25",
+            "imageName": "gs25.png"
+        },
+        {
+            "id": 1,
+            "title": "Family Mart",
+            "imageName": "familymart.png"
+        }
+    ],
+    "product": [
+        {
+            "id": 1,
+            "storeId": 1,
+            "title": "Cà phê đá circle k",
+            "description": "Ngon nhưng mắc ẻ",
+            "imageName": "caphedacirclek.png",
+            "price": 15000
+        },
+        {
+            "id": 2,
+            "storeId": 2,
+            "title": "Bánh mì",
+            "description": "Có bánh mì thịt, ốp la",
+            "imageName": "banhmi.png",
+            "price": 20000
+        },
+        {
+            "id": 3,
+            "storeId": 3,
+            "title": "Cơm nắm",
+            "description": "Cá ngừ, bò, thanh cua",
+            "imageName": "comnam.png",
+            "price": 15000
+        },
+        {
+            "id": 4,
+            "storeId": 4,
+            "title": "Trà thái đỏ",
+            "description": "Ngon nhưng mắc ẻ",
+            "imageName": "trathaido.png",
+            "price": 15000
+        },
+        {
+            "id": 5,
+            "storeId": 5,
+            "title": "Trà thái xanh",
+            "description": "Ngon nhưng mắc ẻ",
+            "imageName": "trathaixanh.png",
+            "price": 15000
+        }
+    ]
+}

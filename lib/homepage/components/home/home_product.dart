@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:th_flutter/productdetail/productdetail.dart';
+
+import '../../../routes.dart';
 
 class HomePopularProduct extends StatefulWidget {
   const HomePopularProduct({super.key});
@@ -37,8 +40,7 @@ class _HomePopularProductState extends State<HomePopularProduct> {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Clicked item $index")));
+                    Navigator.pushNamed(context, ProductDetailPage.routeName);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8),

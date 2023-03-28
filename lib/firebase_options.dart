@@ -55,6 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '890707683759',
     projectId: 'th-flutter-d1366',
     authDomain: 'th-flutter-d1366.firebaseapp.com',
+    databaseURL: 'https://th-flutter-d1366-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'th-flutter-d1366.appspot.com',
   );
 
@@ -63,6 +64,7 @@ class DefaultFirebaseOptions {
     appId: '1:890707683759:android:c5dd2ac7851edaa3ba675a',
     messagingSenderId: '890707683759',
     projectId: 'th-flutter-d1366',
+    databaseURL: 'https://th-flutter-d1366-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'th-flutter-d1366.appspot.com',
   );
 }

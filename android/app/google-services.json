@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "890707683759",
+    "firebase_url": "https://th-flutter-d1366-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "th-flutter-d1366",
     "storage_bucket": "th-flutter-d1366.appspot.com"
   },
@@ -14,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "890707683759-a3n4jf18niujhift78ptig69nqhj0f24.apps.googleusercontent.com",
+          "client_id": "890707683759-ri5j2l9pckftso77l0fugmuhu7ii0ijm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

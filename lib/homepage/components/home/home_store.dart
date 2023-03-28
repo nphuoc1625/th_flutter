@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:typed_data';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:th_flutter/Model/store.dart';
+import 'dart:convert';
 
 class HomeStore extends StatefulWidget {
   const HomeStore({super.key});
@@ -11,8 +14,36 @@ class HomeStore extends StatefulWidget {
 }
 
 class _HomeStoreState extends State<HomeStore> {
+  List<Store> stores = [];
+
+  void getData() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref().child("store");
+    DataSnapshot snapshot = await ref.get();
+    for (DataSnapshot s in snapshot.children) {
+      Store store = Store.fromJson(s.value as Map<String, dynamic>);
+
+      FirebaseStorage.instance
+          .ref("store")
+          .child(store.imageName)
+          .getDownloadURL()
+          .then((value) {
+        store.imageLink = value;
+        setState(() {
+          stores.add(store);
+        });
+      });
+    }
+    ;
+  }
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getData();
+      },
+    );
+
     return Column(
       children: [
         Row(
@@ -32,7 +63,7 @@ class _HomeStoreState extends State<HomeStore> {
           height: 150,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
-            itemCount: 20,
+            itemCount: stores.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return GestureDetector(
@@ -41,12 +72,9 @@ class _HomeStoreState extends State<HomeStore> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(
-                      "assets/dish.png",
-                      height: 130,
-                    ),
-                    const Text(
-                      "Food ",
+                    Image.network(stores[index].imageLink!),
+                    Text(
+                      stores[index].title,
                     ),
                   ],
                 ),

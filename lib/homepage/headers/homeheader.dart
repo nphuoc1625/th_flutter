@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../cart/cartbutton.dart';
+
 class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
 
@@ -41,12 +43,9 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
           ),
         ),
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.grey,
-            ))
+        const CartButton(
+          iconColor: Colors.grey,
+        ),
       ]),
     );
   }
