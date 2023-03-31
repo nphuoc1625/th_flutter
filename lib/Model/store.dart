@@ -4,7 +4,7 @@ class Store {
   int id;
   String title;
   String imageName;
-  String? imageLink;
+  Image? image;
   Store(this.id, this.title, this.imageName);
 
   Store.fromJson(Map<String, dynamic> json)

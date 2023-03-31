@@ -16,24 +16,32 @@ class HomeStore extends StatefulWidget {
 class _HomeStoreState extends State<HomeStore> {
   List<Store> stores = [];
 
-  void getData() async {
+  void getData() {
     DatabaseReference ref = FirebaseDatabase.instance.ref().child("store");
-    DataSnapshot snapshot = await ref.get();
-    for (DataSnapshot s in snapshot.children) {
-      Store store = Store.fromJson(s.value as Map<String, dynamic>);
+    try {
+      ref.get().then((value) {
+        if (value.exists) {
+          for (DataSnapshot s in value.children) {
+            Store store = Store.fromJson(s.value as Map<String, dynamic>);
 
-      FirebaseStorage.instance
-          .ref("store")
-          .child(store.imageName)
-          .getDownloadURL()
-          .then((value) {
-        store.imageLink = value;
-        setState(() {
-          stores.add(store);
-        });
+            FirebaseStorage.instance
+                .ref("store")
+                .child(store.imageName)
+                .getData()
+                .then((value) {
+              store.image = Image.memory(
+                value!,
+                width: 150,
+                height: 120,
+              );
+              setState(() {
+                stores.add(store);
+              });
+            });
+          }
+        }
       });
-    }
-    ;
+    } catch (e) {}
   }
 
   @override
@@ -72,7 +80,9 @@ class _HomeStoreState extends State<HomeStore> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(stores[index].imageLink!),
+                    stores[index].image ??
+                        const CircularProgressIndicator(
+                            color: Colors.blue, strokeWidth: 2),
                     Text(
                       stores[index].title,
                     ),
