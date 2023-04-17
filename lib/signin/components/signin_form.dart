@@ -26,9 +26,10 @@ class _SignInFormState extends State<SignInForm> {
   @override
   void initState() {
     super.initState();
+    checkIfSaved().then((value) => value ? login(context) : {});
   }
 
-  Future<void> checkIfSaved() async {
+  Future<bool> checkIfSaved() async {
     SharedPreferences ref = await SharedPreferences.getInstance();
     if (ref.getString('username') != null) {
       setState(() {
@@ -36,7 +37,9 @@ class _SignInFormState extends State<SignInForm> {
         _password.text = ref.getString('password')!;
         _save = true;
       });
+      return true;
     }
+    return false;
   }
 
   void saveUser() async {
@@ -47,8 +50,10 @@ class _SignInFormState extends State<SignInForm> {
 
   void deleteUser() async {
     SharedPreferences ref = await SharedPreferences.getInstance();
-    ref.remove('username');
-    ref.remove('password');
+    if (ref.getString('username') != null) {
+      ref.remove('username');
+      ref.remove('password');
+    }
   }
 
   @override
@@ -202,8 +207,12 @@ class _SignInFormState extends State<SignInForm> {
   void login(BuildContext context) {
     MyUser user = MyUser(_username.text, _password.text);
     UserDB.signIn(user).then((value) {
-      print(UserDB.currentUser!.email);
       if (value == null) {
+        if (_save) {
+          saveUser();
+        } else {
+          deleteUser();
+        }
         Navigator.pushNamed(context, HomePage.routeName);
       } else {
         ScaffoldMessenger.of(context)

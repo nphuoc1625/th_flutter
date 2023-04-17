@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:th_flutter/DBHelper/productdb.dart';
 import 'package:th_flutter/Model/user.dart';
 
 import 'package:http/http.dart' as http;
+
+import '../Model/product.dart';
 
 class UserDB {
   static const String _url = "http://10.0.2.2:3000/api/user";
@@ -40,16 +43,36 @@ class UserDB {
     }
   }
 
+  static Future<List<Product>> getAllFavorite(String userId) async {
+    List<Product> products = [];
+    var res = await http.get(Uri.parse("$_url/favorite/$userId"));
+    if (res.statusCode == 200) {
+      for (int id in jsonDecode(res.body)) {
+        Product p = (await ProductDB.getProductAt(id))!;
+
+        p.image = ProductDB.getImage(p.imageName, 100, 100);
+
+        products.add(p);
+      }
+      return products;
+    } else {
+      return [];
+    }
+  }
+
   static Future<void> disLike(String userId, int productId) async {
-    http.post(Uri.parse("$_url/favorite/remove"),
-        body: jsonEncode(
-            Map<String, dynamic>.from({'id': productId, 'userId': userId})));
+    Map<String, dynamic> post = {"id": productId, "userId": userId};
+    http.post(
+        headers: {"content-type": "application/json"},
+        Uri.parse("$_url/favorite/remove"),
+        body: jsonEncode(post));
   }
 
   static Future<void> like(String userId, int productId) async {
-    http.post(Uri.parse("$_url/favorite/add"),
-        body: jsonEncode(
-            Map<String, dynamic>.from({'id': productId, 'userId': userId})));
+    Map<String, dynamic> post = {"id": productId, "userId": userId};
+    http.post(headers: {
+      "content-type": "application/json",
+    }, Uri.parse("$_url/favorite/add"), body: jsonEncode(post));
   }
 
   static void signOut() {

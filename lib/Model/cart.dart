@@ -1,3 +1,5 @@
+import 'package:th_flutter/DBHelper/userdb.dart';
+
 import 'cart_item.dart';
 
 class Cart {
@@ -32,6 +34,7 @@ class Cart {
     Map<String, dynamic> map;
     DateTime now = DateTime.now();
     map = {
+      "userId": UserDB.currentUser!.id,
       "total_price": totalPrice,
       "date_created":
           "${now.hour}:${now.minute} ${now.day}:${now.month}:${now.year}:",

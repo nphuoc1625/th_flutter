@@ -9,6 +9,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 
 const User = require('../model/user');
 const { ObjectId } = require('mongodb');
+const { getJSON } = require('curl');
 
 router.get('/', (req, res) => {
     res.send("no Such Request");
@@ -52,26 +53,23 @@ router.post('/signin', async (req, res) => {
 //add product to favorite
 router.post('/favorite/add', (req, res) => {
     var body = req.body;
+
     var id = Number.parseInt(body['id']);
     var userId = body['userId'];
     console.log(userId + "  " + id);
-
     client.connect().then(() => {
-        client.db('th_flutter').collection('user').updateOne({
-            _id: { $eq: new ObjectId(userId) }
-        },
-            { $addToSet: { favorite: id } }, {})
+        client.db('th_flutter').collection('user')
+            .updateOne({
+                _id: { $eq: new ObjectId(userId) }
+            }, { $addToSet: { favorite: id } })
             .then(
-                (result) => {
-                    res.status(200).send(result);
-                },
-                (reason) => {
-                    res.status(500).send("add to db error:" + reason);
-                }
+                (result) => { res.status(200).send(result); },
+                (reason) => { res.status(500).send("add to db error:" + reason); }
             );
     }, (err) => {
         res.status(500).send("db connect error:" + err);
     });
+    client.close();
 });
 
 //remove product from favorite
@@ -82,12 +80,9 @@ router.post('/favorite/remove', (req, res) => {
 
     console.log(userId + "  " + id);
     client.connect().then(() => {
-        const collection = client.db('th_flutter').collection('user');
-
-        collection.updateOne({
+        client.db('th_flutter').collection('user').updateOne({
             _id: { $eq: new ObjectId(userId) }
-        },
-            { $unset: { favorite: id } }, {})
+        }, { favorite: { $unset: id } })
             .then(
                 (result) => {
                     res.status(200).send(result);
@@ -99,6 +94,7 @@ router.post('/favorite/remove', (req, res) => {
     }, (err) => {
         res.status(500).send("db connect error:" + err);
     });
+    client.close();
 });
 
 
@@ -108,25 +104,46 @@ router.get('/favorite/:userId/:id', async (req, res) => {
     var userId = req.params.userId;
 
     client.connect().then(() => {
-        client.db('th_flutter').collection('user').find(
-            {
+        client.db('th_flutter').collection('user')
+            .find({
                 _id: { $eq: new ObjectId(userId) },
                 favorite: { $in: [id] }
             }).toArray()
-            .then(
-                (val) => {
-                    if (val.length > 0) {
-                        res.status(200).send('found');
-                        client.close();
-                    }
+            .then((val) => {
+                if (val.length > 0) {
+                    res.status(200).send('found');
+                    client.close();
                 }
-            );
+            });
+    }, (err) => {
+        console.log(err);
+        res.status(500).send(err);
+    });
+    client.close();
+});
+
+//Get All Favortite
+router.get('/favorite/:userId', async (req, res) => {
+    var userId = req.params.userId;
+
+    client.connect().then(() => {
+        client.db('th_flutter').collection('user')
+            .find({
+                _id: { $eq: new ObjectId(userId) },
+            }).toArray()
+            .then((val) => {
+                if (val[0]['favorite'] != null) {
+                    res.status(200).json(val[0]['favorite']);
+                    client.close();
+                } else {
+                    res.status(500).send("no item found");
+                }
+            });
     }, (err) => {
         console.log(err);
         res.status(500).send(err);
     });
 });
-
 
 
 module.exports = router;

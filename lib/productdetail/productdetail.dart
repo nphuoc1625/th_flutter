@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:th_flutter/DBHelper/productdb.dart';
@@ -144,9 +142,9 @@ class _ProductDetailPageState extends State {
     });
 
     if (_isFavorrite) {
-      UserDB.disLike(userId, productId);
-    } else {
       UserDB.like(userId, productId);
+    } else {
+      UserDB.disLike(userId, productId);
     }
   }
 }

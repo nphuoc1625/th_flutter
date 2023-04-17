@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Product {
   String description, title, imageName;
+  // ignore: prefer_final_fields
   int _id, storeId, price;
 
   Image? image;

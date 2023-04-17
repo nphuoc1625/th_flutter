@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
 import '../Model/product.dart';
@@ -39,12 +40,18 @@ class ProductDB {
 
     if (res.statusCode == 200) {
       List<dynamic> result = jsonDecode(res.body);
+      List<Store> stores = result.map((e) => Store.fromJson(e)).toList();
 
-      List<Store> products = result.map((element) {
-        return Store.fromJson(element);
-      }).toList();
-      return products;
+      return stores;
     }
     return [];
+  }
+
+  static Image getImage(String imageName, double width, double height) {
+    return Image.network(
+      'http://10.0.2.2:3000/api/image/$imageName',
+      width: width,
+      height: height,
+    );
   }
 }

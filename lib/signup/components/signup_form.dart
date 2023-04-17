@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:th_flutter/DBHelper/userdb.dart';
 import 'package:th_flutter/Model/user.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../Model/ultilities.dart';
 
 class SignUpForm extends StatefulWidget {

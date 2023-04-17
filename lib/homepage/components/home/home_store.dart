@@ -1,10 +1,7 @@
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:th_flutter/Model/store.dart';
 
 import '../../../DBHelper/productdb.dart';
-import '../../../Model/product.dart';
 
 class HomeStore extends StatefulWidget {
   const HomeStore({super.key});
@@ -16,26 +13,17 @@ class HomeStore extends StatefulWidget {
 class _HomeStoreState extends State<HomeStore> {
   List<Store> stores = [];
 
-  void getData() {
+  void getData() async {
     ProductDB.getStores().then((value) {
       setState(() {
         stores = value;
       });
-
-      for (var element in stores) {
-        FirebaseStorage.instance
-            .ref('store')
-            .child(element.imageName)
-            .getData()
-            .then((value) => {
-                  if (value != null)
-                    if (mounted)
-                      setState(() {
-                        element.image = Image.memory(
-                          value,
-                        );
-                      })
-                });
+      for (int i = 0; i < stores.length; i++) {
+        if (mounted) {
+          setState(() {
+            stores[i].image = ProductDB.getImage(stores[i].imageName, 150, 150);
+          });
+        }
       }
     });
   }

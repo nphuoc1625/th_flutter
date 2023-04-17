@@ -30,7 +30,6 @@ class _BodyState extends State<Body> implements OnClick {
   var isSearching = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

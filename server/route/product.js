@@ -1,5 +1,6 @@
 var route = require('express').Router();
 const Product = require('../model/product');
+const fs = require('fs');
 
 route.get('/', async (req, res) => {
     var doc = await Product.find();
@@ -23,6 +24,8 @@ route.get('/:id', async (req, res) => {
         }
     )
 
-})
+});
+
+
 
 module.exports = route;

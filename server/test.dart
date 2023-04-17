@@ -1,27 +1,16 @@
-// import 'dart:convert';
-// import 'dart:html' as html;
 // import 'dart:io';
 
-// void main(List<String> args) {
-//   getDataFromServer();
-// }
+// void main() async {
+//   print('Received message: ');
+//   final socket = await WebSocket.connect('ws://localhost:3000');
 
-// Future<void> getDataFromServer() async {
-//   final url = Uri.parse('localhost:3000/api/user/signup');
-//   final response = await Http.post(url, body: {
-//     "name": "Ngoc Phuoc",
-//     "email": "admin@gmail.com",
-//     "password": "123123123"
+//   socket.listen((message) {
+//     print('Received message: $message');
+//   }, onError: (error) {
+//     print('Error: $error');
+//   }, onDone: () {
+//     print('Disconnected from WebSocket server');
 //   });
 
-//   if (response.statusCode == 200) {
-//     // final responseData =
-//     //     json.decode("{'data':[{'object1':123123},{'object1':123123}]}");
-//     // Process the data as needed
-//     final responseData = jsonDecode(response.body);
-
-//     print(responseData);
-//   } else {
-//     throw Exception('Failed to load data from server');
-//   }
+//   socket.add('Hello, server!');
 // }

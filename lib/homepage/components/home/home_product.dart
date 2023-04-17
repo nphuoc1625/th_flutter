@@ -1,6 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:th_flutter/DBHelper/productdb.dart';
 import 'package:th_flutter/productdetail/productdetail.dart';
@@ -24,19 +21,12 @@ class _HomePopularProductState extends State<HomePopularProduct> {
       });
 
       for (var i = 0; i < products.length; i++) {
-        FirebaseStorage.instance
-            .ref('product')
-            .child(products[i].imageName)
-            .getData()
-            .then((value) => {
-                  if (value != null)
-                    if (mounted)
-                      setState(() {
-                        products[i].image = Image.memory(
-                          value,
-                        );
-                      })
-                });
+        if (mounted) {
+          setState(() {
+            products[i].image =
+                ProductDB.getImage(products[i].imageName, 100, 100);
+          });
+        }
       }
     });
   }

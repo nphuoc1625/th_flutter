@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:th_flutter/DBHelper/userdb.dart';
 import 'package:th_flutter/Model/product.dart';
 
 import '../../productdetail/productdetail.dart';
@@ -18,38 +16,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>
   List<Product> products = [];
 
   getFavorites() async {
-    products = [];
-    //get Favorite ids
-    DataSnapshot favoriteIdList = await FirebaseDatabase.instance
-        .ref("user")
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .child("favorite")
-        .get();
-    if (favoriteIdList.exists) {
-      for (DataSnapshot favoriteId in favoriteIdList.children) {
-        DataSnapshot productData = await FirebaseDatabase.instance
-            .ref("product")
-            .child(favoriteId.key!)
-            .get();
-        //if exist product, get data
-        if (productData.exists) {
-          Product p =
-              Product.fromJson(productData.value as Map<String, dynamic>);
-          //get product image
-          FirebaseStorage.instance
-              .ref("product")
-              .child(p.imageName)
-              .getData()
-              .then((value) {
-            if (value != null) {
-              p.image = Image.memory(value, height: 100, width: 100);
-              if (mounted) setState(() {});
-            }
-          });
-          if (mounted) setState(() => products.add(p));
-        }
-      }
-    }
+    products = await UserDB.getAllFavorite(UserDB.currentUser!.id!);
+    setState(() {});
   }
 
   @override
@@ -72,7 +40,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                       arguments: products[index].id) as bool;
                   if (!result) {
                     getFavorites();
-                    setState(() {});
                   }
                 },
                 child: Padding(

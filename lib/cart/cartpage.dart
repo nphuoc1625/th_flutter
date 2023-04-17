@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ftoast/ftoast.dart';
+import 'package:th_flutter/DBHelper/cartdb.dart';
 import 'package:th_flutter/Model/cart.dart';
 import 'package:th_flutter/cart/components/bottom.dart';
 import 'package:th_flutter/cart/components/mycart_header.dart';
@@ -124,27 +123,27 @@ class _MyCartState extends State<MyCart> implements OnClick {
   @override
   void onClick() {
     if (cart.items.isNotEmpty) {
-      DatabaseReference ref = FirebaseDatabase.instance
-          .ref("user")
-          .child(FirebaseAuth.instance.currentUser!.uid)
-          .child("order")
-          .push();
-      ref.set(cart.toMap());
-
-      FirebaseDatabase.instance
-          .ref("user")
-          .child(FirebaseAuth.instance.currentUser!.uid)
-          .child("notification")
-          .push()
-          .set({
-        "read": false,
-        "title": "Đơn hàng ${ref.key} được tạo thành công và đang đợi xác nhận",
-        "time": DateTime.now().toIso8601String()
+      CartDB.checkOut().then((value) {
+        if (value.statusCode == 200) {
+          FToast.toast(context,
+              msg: "Tạo đơn hàng thành công và đang chờ xác nhận",
+              duration: 1000);
+          cart.items.clear();
+          setState(() {});
+        } else {
+          FToast.toast(context, msg: value.body, duration: 1000);
+        }
       });
-
-      FToast.toast(context, msg: "tạo đơn hàng thành công", duration: 1000);
-      cart.items.clear();
-      setState(() {});
+      // FirebaseDatabase.instance
+      //     .ref("user")
+      //     .child(FirebaseAuth.instance.currentUser!.uid)
+      //     .child("notification")
+      //     .push()
+      //     .set({
+      //   "read": false,
+      //   "title": "Đơn hàng ${ref.key} được tạo thành công và đang đợi xác nhận",
+      //   "time": DateTime.now().toIso8601String()
+      // });
     } else {
       FToast.toast(context, msg: "Your cart is empty", duration: 1000);
     }
