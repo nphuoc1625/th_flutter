@@ -1,10 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:th_flutter/Model/store.dart';
-import 'dart:convert';
+
+import '../../../DBHelper/productdb.dart';
+import '../../../Model/product.dart';
 
 class HomeStore extends StatefulWidget {
   const HomeStore({super.key});
@@ -17,56 +17,39 @@ class _HomeStoreState extends State<HomeStore> {
   List<Store> stores = [];
 
   void getData() {
-    DatabaseReference ref = FirebaseDatabase.instance.ref().child("store");
-    try {
-      ref.get().then((value) {
-        if (value.exists) {
-          for (DataSnapshot s in value.children) {
-            Store store = Store.fromJson(s.value as Map<String, dynamic>);
-
-            FirebaseStorage.instance
-                .ref("store")
-                .child(store.imageName)
-                .getData()
-                .then((value) {
-              store.image = Image.memory(
-                value!,
-                width: 150,
-                height: 120,
-              );
-              setState(() {
-                stores.add(store);
-              });
-            });
-          }
-        }
+    ProductDB.getStores().then((value) {
+      setState(() {
+        stores = value;
       });
-    } catch (e) {}
+
+      for (var element in stores) {
+        FirebaseStorage.instance
+            .ref('store')
+            .child(element.imageName)
+            .getData()
+            .then((value) => {
+                  if (value != null)
+                    if (mounted)
+                      setState(() {
+                        element.image = Image.memory(
+                          value,
+                        );
+                      })
+                });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        getData();
-      },
-    );
-
     return Column(
       children: [
-        Row(
-          children: [
-            const Text(
-              "Stores",
-              style: TextStyle(fontSize: 20, color: Colors.blue),
-            ),
-            const Expanded(child: SizedBox()),
-            TextButton(
-                onPressed: () {},
-                child: const Text("See more",
-                    style: TextStyle(fontSize: 20, color: Colors.blue)))
-          ],
-        ),
         SizedBox(
           height: 150,
           width: MediaQuery.of(context).size.width,
@@ -80,9 +63,13 @@ class _HomeStoreState extends State<HomeStore> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    stores[index].image ??
-                        const CircularProgressIndicator(
-                            color: Colors.blue, strokeWidth: 2),
+                    SizedBox(
+                      width: 150,
+                      height: 130,
+                      child: stores[index].image ??
+                          const CircularProgressIndicator(
+                              color: Colors.blue, strokeWidth: 2),
+                    ),
                     Text(
                       stores[index].title,
                     ),

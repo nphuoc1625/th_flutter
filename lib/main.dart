@@ -4,13 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:th_flutter/splashpage/splashpage.dart';
 import 'firebase_options.dart';
 
-void main() async {
-  runApp(const MyApp());
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -22,18 +15,44 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       routes: routes,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const SplashPage(),
     );
   }
+}
+
+// Future<void> initializeService() async {
+//   final service = FlutterBackgroundService();
+//   service.configure(
+//       iosConfiguration: IosConfiguration(),
+//       androidConfiguration: AndroidConfiguration(
+//         onStart: onServiceStart,
+//         isForegroundMode: false,
+//         autoStart: false,
+//       ));
+//   service.startService();
+// }
+
+// void onServiceStart(ServiceInstance service) {
+//   print("service started");
+
+//   DatabaseReference ref = FirebaseDatabase.instance
+//       .ref("user")
+//       .child(FirebaseAuth.instance.currentUser!.uid)
+//       .child("order");
+//   ref.onValue.listen((event) {
+//     if (event.type == DatabaseEventType.childChanged) {
+//       print(event.snapshot.value);
+//     }
+//   });
+// }
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // await initializeService();
 }

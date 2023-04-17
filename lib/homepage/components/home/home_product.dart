@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:th_flutter/DBHelper/productdb.dart';
 import 'package:th_flutter/productdetail/productdetail.dart';
 
-import '../../../routes.dart';
+import '../../../Model/product.dart';
 
 class HomePopularProduct extends StatefulWidget {
   const HomePopularProduct({super.key});
@@ -14,58 +15,85 @@ class HomePopularProduct extends StatefulWidget {
 }
 
 class _HomePopularProductState extends State<HomePopularProduct> {
+  List<Product> products = [];
+
+  void getData() {
+    ProductDB.getProducts().then((value) {
+      setState(() {
+        products = value;
+      });
+
+      for (var i = 0; i < products.length; i++) {
+        FirebaseStorage.instance
+            .ref('product')
+            .child(products[i].imageName)
+            .getData()
+            .then((value) => {
+                  if (value != null)
+                    if (mounted)
+                      setState(() {
+                        products[i].image = Image.memory(
+                          value,
+                        );
+                      })
+                });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Text(
-              "Popular products",
-              style: TextStyle(fontSize: 20, color: Colors.blue),
-            ),
-            const Expanded(child: SizedBox()),
-            TextButton(
-                onPressed: () {},
-                child: const Text("See more",
-                    style: TextStyle(fontSize: 20, color: Colors.blue)))
-          ],
-        ),
-        SizedBox(
-          height: 170,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-            itemCount: 20,
-            scrollDirection: Axis.horizontal,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 0.65),
+            itemCount: products.length,
+            primary: false,
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, ProductDetailPage.routeName);
+                    Navigator.pushNamed(context, ProductDetailPage.routeName,
+                        arguments: products[index].id);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset(
-                          "assets/dish.png",
-                          height: 130,
+                        products[index].image ??
+                            const CircularProgressIndicator(
+                                color: Colors.blue, strokeWidth: 2),
+                        Text(
+                          products[index].title,
                         ),
-                        const Text(
-                          "Food ",
-                        ),
-                        const Text(
-                          "100000 ",
-                          style: TextStyle(
+                        Text(
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          "${products[index].price}",
+                          style: const TextStyle(
                               color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                   ));
             },
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

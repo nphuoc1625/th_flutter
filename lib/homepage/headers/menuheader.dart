@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../signin/signinpage.dart';
 
 class MenuHeader extends StatelessWidget {
   const MenuHeader({super.key});
@@ -9,9 +12,18 @@ class MenuHeader extends StatelessWidget {
       children: [
         const Expanded(child: Text("Account Info")),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                SignInPage.routeName,
+                (route) {
+                  return false;
+                },
+              );
+            },
             child: const Text(
-              "Save",
+              "Logout",
               style: TextStyle(color: Colors.white),
             ))
       ],

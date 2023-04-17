@@ -40,6 +40,12 @@ dependencies:
   firebase_auth:
   firebase_storage:
   firebase_database:
+  textfield_tags: ^2.0.2
+  chips_choice: ^3.0.0
+  firebase_messaging: ^14.4.0
+  flutter_background_service: ^2.4.6
+  permission_handler: ^10.2.0
+  http: ^0.13.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

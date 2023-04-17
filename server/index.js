@@ -1,22 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-// Creating express app
+
+//Middleware
+const bodyParser = require('body-parser');
 const app = express();
 
-// Parsing the incoming requests' json payloads
-app.use(express.json());
 
-// Connecting to MongoDB database
-mongoose.connect('mongodb://localhost:2000/mydb')
-    .then(() => console.log('Connected to MongoDB database...'))
-    .catch(err => console.error('Could not connect to MongoDB database...', err));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// Defining routes and middleware
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+
+mongoose.connect('mongodb://127.0.0.1:27017/th_flutter').then(() => {
+    console.log("Mongodb Connected");
 });
 
-// Listening on a port
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+app.listen(3000, function () {
+    console.log(`Server listening on port 3000`);
+});
+
+app.use(require('./route/addroute'));

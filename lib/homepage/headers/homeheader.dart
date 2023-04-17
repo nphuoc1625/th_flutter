@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:th_flutter/Model/onclick.dart';
 
-import '../../cart/cartbutton.dart';
+import 'cartbutton.dart';
 
 class HomeHeader extends StatefulWidget {
-  const HomeHeader({super.key});
-
+  const HomeHeader(this.onClick, {super.key});
+  final OnClick onClick;
   @override
   State<HomeHeader> createState() => _HomeHeaderState();
 }
@@ -17,7 +18,6 @@ class _HomeHeaderState extends State<HomeHeader> {
       child: Row(children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.grey[200],
@@ -27,7 +27,9 @@ class _HomeHeaderState extends State<HomeHeader> {
               children: [
                 Expanded(
                   child: TextField(
+                    onTap: () => widget.onClick.onClick(),
                     decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 10),
                         hintText: "Find your food here",
                         border: InputBorder.none),
                     onEditingComplete: () {},

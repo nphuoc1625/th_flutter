@@ -1,7 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ftoast/ftoast.dart';
+import 'package:th_flutter/DBHelper/userdb.dart';
 import 'package:th_flutter/Model/user.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,32 +58,6 @@ class _SignUpFormState extends State<SignUpForm> {
                             color: Colors.white))),
               ),
               const SizedBox(height: 30),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Container(
-              //       height: 40,
-              //       width: 40,
-              //       decoration: const BoxDecoration(
-              //           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-              //       child: SvgPicture.asset("assets/icons/facebook.svg"),
-              //     ),
-              //     Container(
-              //       height: 40,
-              //       width: 40,
-              //       decoration: const BoxDecoration(
-              //           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-              //       child: SvgPicture.asset("assets/icons/google.svg"),
-              //     ),
-              //     Container(
-              //       height: 40,
-              //       width: 40,
-              //       decoration: const BoxDecoration(
-              //           color: Color(0xFFF5F6F9), shape: BoxShape.circle),
-              //       child: SvgPicture.asset("assets/icons/twitter.svg"),
-              //     )
-              //   ],
-              // ),
             ],
           ),
         ));
@@ -139,21 +111,17 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  onClickRegister(BuildContext context) async {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    try {
-      UserCredential credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: email.text, password: password.text);
-
-      if (credential.user != null && mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Register Success")));
-        Navigator.pop(context, MyUser(email.text, password.text));
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("$e.mess")));
+  onClickRegister(BuildContext context) {
+    if (_formkey.currentState!.validate()) {
+      MyUser user = MyUser(email.text, password.text);
+      UserDB.signUp(user).then((result) {
+        if (result == null) {
+          Navigator.pop(context, [email.text, password.value]);
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(result)));
+        }
+      });
     }
   }
 }

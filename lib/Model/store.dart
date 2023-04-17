@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Store {
   int id;
@@ -7,8 +7,8 @@ class Store {
   Image? image;
   Store(this.id, this.title, this.imageName);
 
-  Store.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+  Store.fromJson(Map<dynamic, dynamic> json)
+      : id = json['_id'],
         title = json['title'],
         imageName = json['imageName'];
 }

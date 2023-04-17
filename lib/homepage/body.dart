@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:th_flutter/homepage/components/account.dart';
+import 'package:th_flutter/Model/onclick.dart';
+import 'package:th_flutter/homepage/components/account/account.dart';
 import 'package:th_flutter/homepage/components/favorite.dart';
 import 'package:th_flutter/homepage/components/home/home.dart';
 import 'package:th_flutter/homepage/components/notification.dart';
+import 'package:th_flutter/homepage/components/search/searchpage.dart';
 
 import 'headers/homeheader.dart';
 import 'headers/menuheader.dart';
@@ -14,7 +16,7 @@ class Body extends StatefulWidget {
   State<Body> createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body> implements OnClick {
   var flag = true;
 
   var _index = 0;
@@ -22,18 +24,38 @@ class _BodyState extends State<Body> {
     HomeScreen(),
     FavoriteScreen(),
     NotificationScreen(),
-    AccountScreen()
+    AccountScreen(),
   ];
+
+  var isSearching = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: isSearching
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    isSearching = false;
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ))
+            : null,
         backgroundColor: flag ? Colors.white : Colors.blue,
         automaticallyImplyLeading: false,
-        title: flag ? const HomeHeader() : const MenuHeader(),
+        title: flag ? HomeHeader(this) : const MenuHeader(),
       ),
-      body: SafeArea(child: _body[_index]),
+      body: SafeArea(child: isSearching ? showSearchPage() : _body[_index]),
       bottomNavigationBar: SizedBox(
         height: 80,
         child: BottomNavigationBar(
@@ -64,5 +86,16 @@ class _BodyState extends State<Body> {
             ]),
       ),
     );
+  }
+
+  Widget showSearchPage() {
+    return const SearchPage();
+  }
+
+  @override
+  void onClick() {
+    setState(() {
+      isSearching = true;
+    });
   }
 }
