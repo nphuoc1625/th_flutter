@@ -131,21 +131,11 @@ class _MyCartState extends State<MyCart> implements OnClick {
           cart.items.clear();
           setState(() {});
         } else {
-          FToast.toast(context, msg: value.body, duration: 1000);
+          FToast.toast(context, msg: value.body, duration: 2000);
         }
       });
-      // FirebaseDatabase.instance
-      //     .ref("user")
-      //     .child(FirebaseAuth.instance.currentUser!.uid)
-      //     .child("notification")
-      //     .push()
-      //     .set({
-      //   "read": false,
-      //   "title": "Đơn hàng ${ref.key} được tạo thành công và đang đợi xác nhận",
-      //   "time": DateTime.now().toIso8601String()
-      // });
     } else {
-      FToast.toast(context, msg: "Your cart is empty", duration: 1000);
+      FToast.toast(context, msg: "Your cart is empty", duration: 2000);
     }
   }
 }

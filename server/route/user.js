@@ -7,9 +7,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 
 
 
-const User = require('../model/user');
 const { ObjectId } = require('mongodb');
-const { getJSON } = require('curl');
+var order = require('../model/order');
+var user = require('../model/user');
 
 router.get('/', (req, res) => {
     res.send("no Such Request");
@@ -42,7 +42,7 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req, res) => {
     var body = req.body;
 
-    var doc = await User.find({ email: body.email, password: body.password });
+    var doc = await user.find({ email: body.email, password: body.password });
     if (doc.length > 0)
         res.status(200).json(doc[0]);
     else {
@@ -60,11 +60,17 @@ router.post('/favorite/add', (req, res) => {
     client.connect().then(() => {
         client.db('th_flutter').collection('user')
             .updateOne({
-                _id: { $eq: new ObjectId(userId) }
+                _id: new ObjectId(userId)
             }, { $addToSet: { favorite: id } })
             .then(
-                (result) => { res.status(200).send(result); },
-                (reason) => { res.status(500).send("add to db error:" + reason); }
+                (result) => {
+                    res.status(200).send(result);
+                    client.close();
+                },
+                (reason) => {
+                    res.status(500).send("add to db error:" + reason);
+                    client.close();
+                }
             );
     }, (err) => {
         res.status(500).send("db connect error:" + err);
@@ -81,15 +87,20 @@ router.post('/favorite/remove', (req, res) => {
     console.log(userId + "  " + id);
     client.connect().then(() => {
         client.db('th_flutter').collection('user').updateOne({
-            _id: { $eq: new ObjectId(userId) }
+            _id: new ObjectId(userId)
         }, { favorite: { $unset: id } })
             .then(
                 (result) => {
                     res.status(200).send(result);
+                    client.close();
+
                 },
                 (reason) => {
                     res.status(500).send("add to db error:" + reason);
+                    client.close();
+
                 }
+
             );
     }, (err) => {
         res.status(500).send("db connect error:" + err);
@@ -101,25 +112,24 @@ router.post('/favorite/remove', (req, res) => {
 //check if add favorite
 router.get('/favorite/:userId/:id', async (req, res) => {
     var id = Number.parseInt(req.params.id);
-    var userId = req.params.userId;
-
     client.connect().then(() => {
         client.db('th_flutter').collection('user')
-            .find({
-                _id: { $eq: new ObjectId(userId) },
-                favorite: { $in: [id] }
-            }).toArray()
+            .findOne(
+            //     {
+            //     _id: { $eq: new ObjectId(req.params.userId) },
+            //     favorite: { $in: id }
+            // }
+        )
             .then((val) => {
-                if (val.length > 0) {
-                    res.status(200).send('found');
-                    client.close();
-                }
+                res.status(200).send('found');
+                client.close();
+
             });
     }, (err) => {
         console.log(err);
         res.status(500).send(err);
     });
-    client.close();
+
 });
 
 //Get All Favortite
@@ -134,16 +144,38 @@ router.get('/favorite/:userId', async (req, res) => {
             .then((val) => {
                 if (val[0]['favorite'] != null) {
                     res.status(200).json(val[0]['favorite']);
-                    client.close();
                 } else {
                     res.status(500).send("no item found");
                 }
+                client.close();
             });
     }, (err) => {
         console.log(err);
         res.status(500).send(err);
     });
+
 });
 
+router.post('/order/:userId', async (req, res) => {
+    var userId = req.params.userId;
+    var ord = new order(req.body);
+    console.log(ord);
+
+    client.connect().then(() => {
+        client.db('th_flutter').collection('user')
+            .updateOne(
+                { _id: new ObjectId(userId) },
+                { $addToSet: { order: ord } }
+            )
+            .then((doc) => {
+                res.status(200).json(doc);
+                client.close();
+            });
+    }, (err) => {
+        res.status(500).send("DB connecty error" + err);
+    });
+
+
+})
 
 module.exports = router;

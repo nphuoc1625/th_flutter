@@ -3,13 +3,16 @@ import 'package:th_flutter/DBHelper/userdb.dart';
 import 'cart_item.dart';
 
 class Cart {
+  List<CartItem> items = [];
+
   static Cart? _instance;
+
   Cart._internal();
+
   factory Cart() {
     _instance ??= Cart._internal();
     return _instance!;
   }
-  List<CartItem> items = [];
 
   int get totalPrice {
     return items.fold(
@@ -39,13 +42,9 @@ class Cart {
       "date_created":
           "${now.hour}:${now.minute} ${now.day}:${now.month}:${now.year}:",
       "items": items
-          .map((e) => {
-                "${e.item.id}": {"quantity": e.quantity, "total": e.total}
-              })
-          .fold<Map<String, dynamic>>({}, (previousValue, element) {
-        previousValue.addAll(element);
-        return previousValue;
-      })
+          .map((e) =>
+              {"id": e.item.id, "quantity": e.quantity, "total": e.total})
+          .toList()
     };
 
     return map;
