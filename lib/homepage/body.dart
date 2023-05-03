@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:th_flutter/DBHelper/productdb.dart';
 import 'package:th_flutter/Model/onclick.dart';
 import 'package:th_flutter/homepage/components/account/account.dart';
 import 'package:th_flutter/homepage/components/favorite.dart';
@@ -6,6 +7,8 @@ import 'package:th_flutter/homepage/components/home/home.dart';
 import 'package:th_flutter/homepage/components/notification.dart';
 import 'package:th_flutter/homepage/components/search/searchpage.dart';
 
+import '../Model/product.dart';
+import '../Model/store.dart';
 import 'headers/homeheader.dart';
 import 'headers/menuheader.dart';
 
@@ -20,6 +23,8 @@ class _BodyState extends State<Body> implements OnClick {
   var flag = true;
 
   var _index = 0;
+  Widget _searchpage = const SearchPage([]);
+
   final List<Widget> _body = const [
     HomeScreen(),
     FavoriteScreen(),
@@ -54,7 +59,7 @@ class _BodyState extends State<Body> implements OnClick {
         automaticallyImplyLeading: false,
         title: flag ? HomeHeader(this) : const MenuHeader(),
       ),
-      body: SafeArea(child: isSearching ? showSearchPage() : _body[_index]),
+      body: SafeArea(child: isSearching ? _searchpage : _body[_index]),
       bottomNavigationBar: SizedBox(
         height: 80,
         child: BottomNavigationBar(
@@ -87,14 +92,19 @@ class _BodyState extends State<Body> implements OnClick {
     );
   }
 
-  Widget showSearchPage() {
-    return const SearchPage();
-  }
-
   @override
   void onClick() {
     setState(() {
       isSearching = true;
+    });
+  }
+
+  @override
+  void onSearch(String searchText) {
+    ProductDB.search(searchText).then((value) {
+      setState(() {
+        _searchpage = SearchPage(value);
+      });
     });
   }
 }

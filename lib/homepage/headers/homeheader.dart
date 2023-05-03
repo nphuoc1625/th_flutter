@@ -6,11 +6,14 @@ import 'cartbutton.dart';
 class HomeHeader extends StatefulWidget {
   const HomeHeader(this.onClick, {super.key});
   final OnClick onClick;
+
   @override
   State<HomeHeader> createState() => _HomeHeaderState();
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
+  TextEditingController _search = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,6 +30,7 @@ class _HomeHeaderState extends State<HomeHeader> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _search,
                     onTap: () => widget.onClick.onClick(),
                     decoration: const InputDecoration(
                         contentPadding: EdgeInsets.only(left: 10),
@@ -36,7 +40,9 @@ class _HomeHeaderState extends State<HomeHeader> {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.onClick.onSearch(_search.text);
+                    },
                     icon: const Icon(
                       Icons.search,
                       color: Colors.grey,

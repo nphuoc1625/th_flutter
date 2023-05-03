@@ -27,23 +27,6 @@ class _ProductDetailPageState extends State {
       setState(() {
         product = value!;
       });
-      if (product != null) {
-        FirebaseStorage.instance
-            .ref("product")
-            .child(product!.imageName)
-            .getData()
-            .then((value) {
-          product!.image = Image.memory(
-            width: 150,
-            fit: BoxFit.fitHeight,
-            height: 150,
-            value!,
-          );
-          if (mounted) {
-            setState(() {});
-          }
-        });
-      }
     });
   }
 
@@ -51,8 +34,11 @@ class _ProductDetailPageState extends State {
     int productId = ModalRoute.of(context)!.settings.arguments as int;
     String userId = UserDB.currentUser!.id!;
 
-    UserDB.checkIfLiked(userId, productId)
-        .then((value) => {_isFavorrite = value});
+    UserDB.checkIfLiked(userId, productId).then((value) {
+      setState(() {
+        _isFavorrite = value;
+      });
+    });
   }
 
   @override

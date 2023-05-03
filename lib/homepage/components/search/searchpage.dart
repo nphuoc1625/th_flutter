@@ -1,9 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:th_flutter/Model/product.dart';
 import 'package:th_flutter/homepage/components/search/searchpage_body.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+import '../../../Model/store.dart';
 
+class SearchPage extends StatefulWidget {
+  const SearchPage(this.result, {super.key});
+  final List<dynamic> result;
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
@@ -11,6 +14,6 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    return const SearchPageBody();
+    return SearchPageBody(widget.result);
   }
 }

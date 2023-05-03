@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:th_flutter/routes.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:th_flutter/splashpage/splashpage.dart';
-import 'firebase_options.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -51,8 +49,5 @@ class MyApp extends StatelessWidget {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   // await initializeService();
 }

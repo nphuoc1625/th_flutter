@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
@@ -29,6 +30,7 @@ class ProductDB {
     Response res = await http.get(Uri.parse("$_productUrl/$id"));
     if (res.statusCode == 200) {
       Product product = Product.fromJson(jsonDecode(res.body));
+      product.image = getImage(product.imageName, 400, 400);
       return product;
     } else {
       return null;
@@ -47,9 +49,24 @@ class ProductDB {
     return [];
   }
 
+  static Future<List<dynamic>> search(String searchString) async {
+    var res = await http.get(Uri.parse('$_productUrl/find/$searchString'));
+
+    if (res.statusCode == 200) {
+      Map body = jsonDecode(res.body);
+      List<dynamic> result = [];
+      result = body['products'].map((e) => Product.fromJson(e)).toList();
+
+      result.addAll(body['stores'].map((e) => Store.fromJson(e)).toList());
+      return result;
+    }
+    return [];
+  }
+
   static Image getImage(String imageName, double width, double height) {
     return Image.network(
       'http://10.0.2.2:3000/api/image/$imageName',
+      fit: BoxFit.contain,
       width: width,
       height: height,
     );

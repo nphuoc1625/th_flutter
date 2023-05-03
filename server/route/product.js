@@ -1,5 +1,6 @@
 var route = require('express').Router();
 const Product = require('../model/product');
+const Store = require('../model/store')
 const fs = require('fs');
 
 route.get('/', async (req, res) => {
@@ -26,6 +27,30 @@ route.get('/:id', async (req, res) => {
 
 });
 
+route.get('/find/:q', async (req, res) => {
+    var result = {};
+    await Product.find(
+        {
+            $text: {
+                $search: req.params.q,
+                $caseSensitive: false,
+            }
+        }
+    ).then((doc) => {
+        result['products'] = doc;
+    });
+    await Store.find(
+        {
+            $text: {
+                $search: req.params.q,
+                $caseSensitive: false,
+            }
+        }
+    ).then((doc) => {
+        result['stores'] = doc;
+    });
+    res.json(result);
+})
 
 
 module.exports = route;

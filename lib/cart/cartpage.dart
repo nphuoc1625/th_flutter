@@ -57,7 +57,11 @@ class _MyCartState extends State<MyCart> implements OnClick {
                       children: [
                         ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: cart.items[index].item.image!),
+                            child: SizedBox(
+                              width: 150,
+                              child: cart.items[index].item.image ??
+                                  const Icon(Icons.dining_outlined),
+                            )),
                         const SizedBox(width: 10),
                         Expanded(child: buildColumn(cart.items[index]))
                       ])));
@@ -137,5 +141,10 @@ class _MyCartState extends State<MyCart> implements OnClick {
     } else {
       FToast.toast(context, msg: "Your cart is empty", duration: 2000);
     }
+  }
+
+  @override
+  void onSearch(String searchText) {
+    // TODO: implement onSearch
   }
 }

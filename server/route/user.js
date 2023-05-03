@@ -75,7 +75,6 @@ router.post('/favorite/add', (req, res) => {
     }, (err) => {
         res.status(500).send("db connect error:" + err);
     });
-    client.close();
 });
 
 //remove product from favorite
@@ -88,24 +87,20 @@ router.post('/favorite/remove', (req, res) => {
     client.connect().then(() => {
         client.db('th_flutter').collection('user').updateOne({
             _id: new ObjectId(userId)
-        }, { favorite: { $unset: id } })
+        }, { $pull: { favorite: id } })
             .then(
                 (result) => {
                     res.status(200).send(result);
                     client.close();
-
                 },
                 (reason) => {
                     res.status(500).send("add to db error:" + reason);
                     client.close();
-
                 }
-
             );
     }, (err) => {
         res.status(500).send("db connect error:" + err);
     });
-    client.close();
 });
 
 
@@ -115,13 +110,16 @@ router.get('/favorite/:userId/:id', async (req, res) => {
     client.connect().then(() => {
         client.db('th_flutter').collection('user')
             .findOne(
-            //     {
-            //     _id: { $eq: new ObjectId(req.params.userId) },
-            //     favorite: { $in: id }
-            // }
-        )
+                {
+                    _id: { $eq: new ObjectId(req.params.userId) },
+                    favorite: { $in: [id] }
+                }
+            )
             .then((val) => {
-                res.status(200).send('found');
+                if (val)
+                    res.status(200).send('found');
+                else
+                    res.status(500).send('non');
                 client.close();
 
             });
