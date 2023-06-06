@@ -1,7 +1,6 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:th_flutter/DBHelper/productdb.dart';
 import 'package:th_flutter/Model/cart_item.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 import '../DBHelper/userdb.dart';
 import '../Model/cart.dart';
 import '../Model/product.dart';
@@ -23,7 +22,7 @@ class _ProductDetailPageState extends State {
   void getProductInfo() {
     int id = ModalRoute.of(context)!.settings.arguments as int;
 
-    ProductDB.getProductAt(id).then((value) {
+    DBHelper.getProductAt(id).then((value) {
       setState(() {
         product = value!;
       });

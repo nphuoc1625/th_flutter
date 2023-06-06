@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:th_flutter/DBHelper/productdb.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 import 'package:th_flutter/productdetail/productdetail.dart';
 
 import '../../../Model/product.dart';
@@ -15,7 +15,7 @@ class _HomePopularProductState extends State<HomePopularProduct> {
   List<Product> products = [];
 
   void getData() {
-    ProductDB.getProducts().then((value) {
+    DBHelper.getProducts().then((value) {
       setState(() {
         products = value;
       });
@@ -24,7 +24,7 @@ class _HomePopularProductState extends State<HomePopularProduct> {
         if (mounted) {
           setState(() {
             products[i].image =
-                ProductDB.getImage(products[i].imageName, 100, 100);
+                DBHelper.getImage(products[i].imageName, 100, 100);
           });
         }
       }

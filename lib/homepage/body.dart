@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:th_flutter/DBHelper/productdb.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 import 'package:th_flutter/Model/onclick.dart';
 import 'package:th_flutter/homepage/components/account/account.dart';
 import 'package:th_flutter/homepage/components/favorite.dart';
@@ -7,8 +7,6 @@ import 'package:th_flutter/homepage/components/home/home.dart';
 import 'package:th_flutter/homepage/components/notification.dart';
 import 'package:th_flutter/homepage/components/search/searchpage.dart';
 
-import '../Model/product.dart';
-import '../Model/store.dart';
 import 'headers/homeheader.dart';
 import 'headers/menuheader.dart';
 
@@ -101,7 +99,7 @@ class _BodyState extends State<Body> implements OnClick {
 
   @override
   void onSearch(String searchText) {
-    ProductDB.search(searchText).then((value) {
+    DBHelper.search(searchText).then((value) {
       setState(() {
         _searchpage = SearchPage(value);
       });

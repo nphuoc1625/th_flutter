@@ -11,7 +11,7 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-            color: Colors.green,
+            color: Colors.blue,
             onPressed: () {
               Navigator.pop(context);
             },
@@ -19,7 +19,7 @@ class SignUpPage extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           "Signup",
-          style: TextStyle(color: Colors.green),
+          style: TextStyle(color: Colors.blue),
         ),
       ),
       body: const Body(),

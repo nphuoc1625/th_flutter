@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:th_flutter/DBHelper/productdb.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 import 'package:th_flutter/Model/user.dart';
 
 import 'package:http/http.dart' as http;
@@ -48,9 +48,9 @@ class UserDB {
     var res = await http.get(Uri.parse("$_url/favorite/$userId"));
     if (res.statusCode == 200) {
       for (int id in jsonDecode(res.body)) {
-        Product p = (await ProductDB.getProductAt(id))!;
+        Product p = (await DBHelper.getProductAt(id))!;
 
-        p.image = ProductDB.getImage(p.imageName, 100, 100);
+        p.image = DBHelper.getImage(p.imageName, 100, 100);
 
         products.add(p);
       }

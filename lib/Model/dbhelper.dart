@@ -1,17 +1,26 @@
 import 'dart:convert';
+import 'dart:ui';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart%20';
+import 'package:http/http.dart ' as http;
+import 'package:th_flutter/Model/product.dart';
+import 'package:th_flutter/Model/store.dart';
+import '../DBHelper/userdb.dart';
+import 'cart.dart';
 
-import '../Model/product.dart';
-import 'package:http/http.dart' as http;
-
-import '../Model/store.dart';
-
-class ProductDB {
+class DBHelper {
+  static const String cartUrl = 'http://10.0.2.2:3000/api/user/order';
   static const String _productUrl = "http://10.0.2.2:3000/api/product";
   static const String _storeUrl = "http://10.0.2.2:3000/api/store";
+
+  static Future<Response> checkOut() async {
+    Cart cart = Cart();
+    return await http.post(
+        headers: {"content-type": "application/json"},
+        Uri.parse('$cartUrl/${UserDB.currentUser!.id}'),
+        body: jsonEncode(cart.toMap()));
+  }
 
   static Future<List<Product>> getProducts() async {
     var res = await http.get(Uri.parse(_productUrl));

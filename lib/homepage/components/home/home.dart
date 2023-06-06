@@ -15,31 +15,35 @@ class HomeScreen extends StatelessWidget {
             children: [
               const Text(
                 "Stores",
-                style: TextStyle(fontSize: 20, color: Colors.blue),
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold),
               ),
               const Expanded(child: SizedBox()),
               TextButton(
                   onPressed: () {},
                   child: const Text("See more",
-                      style: TextStyle(fontSize: 20, color: Colors.blue)))
+                      style: TextStyle(fontSize: 16, color: Colors.blue)))
             ],
           ),
-          const Divider(),
           const HomeStore(),
           Row(
             children: [
               const Text(
                 "Popular products",
-                style: TextStyle(fontSize: 20, color: Colors.blue),
+                style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold),
               ),
               const Expanded(child: SizedBox()),
               TextButton(
                   onPressed: () {},
                   child: const Text("See more",
-                      style: TextStyle(fontSize: 20, color: Colors.blue)))
+                      style: TextStyle(fontSize: 16, color: Colors.blue)))
             ],
           ),
-          const Divider(),
           const HomePopularProduct()
         ],
       ),

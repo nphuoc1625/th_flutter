@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 import 'package:th_flutter/Model/store.dart';
-
-import '../../../DBHelper/productdb.dart';
 
 class HomeStore extends StatefulWidget {
   const HomeStore({super.key});
@@ -14,14 +13,14 @@ class _HomeStoreState extends State<HomeStore> {
   List<Store> stores = [];
 
   void getData() async {
-    ProductDB.getStores().then((value) {
+    DBHelper.getStores().then((value) {
       setState(() {
         stores = value;
       });
       for (int i = 0; i < stores.length; i++) {
         if (mounted) {
           setState(() {
-            stores[i].image = ProductDB.getImage(stores[i].imageName, 150, 150);
+            stores[i].image = DBHelper.getImage(stores[i].imageName, 150, 150);
           });
         }
       }

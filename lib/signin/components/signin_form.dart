@@ -72,13 +72,13 @@ class _SignInFormState extends State<SignInForm> {
                   "Food now",
                   style: TextStyle(
                       fontSize: 32,
-                      color: Colors.green,
+                      color: Colors.blue,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "Sign in with your email and password",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: Colors.blue),
                 ),
               ],
             ),
@@ -126,7 +126,6 @@ class _SignInFormState extends State<SignInForm> {
                 const SizedBox(height: 5),
                 SizedBox(
                   height: 40,
-                  width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formkey.currentState!.validate()) {
@@ -135,7 +134,7 @@ class _SignInFormState extends State<SignInForm> {
                     },
                     style: const ButtonStyle(
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder()),
-                      backgroundColor: MaterialStatePropertyAll(Colors.green),
+                      backgroundColor: MaterialStatePropertyAll(Colors.blue),
                     ),
                     child: const Text(
                       "Continue",
@@ -146,13 +145,13 @@ class _SignInFormState extends State<SignInForm> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 const Text(
                   "Or continue with social media",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: Colors.blue),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -183,7 +182,7 @@ class _SignInFormState extends State<SignInForm> {
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const Text(
                     "Don't have account ?",
-                    style: TextStyle(color: Colors.green, fontSize: 14),
+                    style: TextStyle(color: Colors.blue, fontSize: 14),
                   ),
                   GestureDetector(
                       onTap: () async {

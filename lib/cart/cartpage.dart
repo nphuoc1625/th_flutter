@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ftoast/ftoast.dart';
-import 'package:th_flutter/DBHelper/cartdb.dart';
 import 'package:th_flutter/Model/cart.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 import 'package:th_flutter/cart/components/bottom.dart';
 import 'package:th_flutter/cart/components/mycart_header.dart';
 
@@ -127,7 +127,7 @@ class _MyCartState extends State<MyCart> implements OnClick {
   @override
   void onClick() {
     if (cart.items.isNotEmpty) {
-      CartDB.checkOut().then((value) {
+      DBHelper.checkOut().then((value) {
         if (value.statusCode == 200) {
           FToast.toast(context,
               msg: "Tạo đơn hàng thành công và đang chờ xác nhận",
@@ -144,7 +144,5 @@ class _MyCartState extends State<MyCart> implements OnClick {
   }
 
   @override
-  void onSearch(String searchText) {
-    // TODO: implement onSearch
-  }
+  void onSearch(String searchText) {}
 }

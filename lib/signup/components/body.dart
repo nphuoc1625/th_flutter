@@ -17,18 +17,18 @@ class _BodyState extends State<Body> {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(children: const [
-            SizedBox(height: 100),
+            SizedBox(height: 50),
             Text(
               "Register Account",
               style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green),
+                  color: Colors.blue),
             ),
             Text(
               "Complete your register \n or continue with social media",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.green),
+              style: TextStyle(color: Colors.blue),
             ),
             SignUpForm()
           ]),

@@ -11,16 +11,14 @@ class Body extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                headerScreen(context),
-                footerScreen(context),
-              ],
+            headerScreen(context),
+            Expanded(
+              child: const SignInForm(),
             ),
-            const SignInForm(),
+            footerScreen(context),
           ],
         ),
       ),
@@ -32,7 +30,7 @@ class Body extends StatelessWidget {
       alignment: Alignment.centerRight,
       "assets/dish.png",
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.2,
+      height: MediaQuery.of(context).size.height * 0.1,
     );
   }
 
@@ -41,7 +39,7 @@ class Body extends StatelessWidget {
       alignment: Alignment.centerLeft,
       "assets/dish_2.png",
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.2,
+      height: MediaQuery.of(context).size.height * 0.1,
     );
   }
 }

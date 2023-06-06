@@ -12,25 +12,25 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   List<MyNotification> notifications = [];
-  getNoti() {
-    String id = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseDatabase.instance.ref("user/$id/notification").get().then((value) =>
-        {
-          // ignore: avoid_function_literals_in_foreach_calls
-          value.children.forEach((element) {
-            MyNotification m =
-                MyNotification.fromMap(element.value as Map<dynamic, dynamic>);
-            m.id = element.key;
-            if (mounted) setState(() => notifications.add(m));
-          })
-        });
-  }
+  // getNoti() {
+  //   String id = FirebaseAuth.instance.currentUser!.uid;
+  //   FirebaseDatabase.instance.ref("user/$id/notification").get().then((value) =>
+  //       {
+  //         // ignore: avoid_function_literals_in_foreach_calls
+  //         value.children.forEach((element) {
+  //           MyNotification m =
+  //               MyNotification.fromMap(element.value as Map<dynamic, dynamic>);
+  //           m.id = element.key;
+  //           if (mounted) setState(() => notifications.add(m));
+  //         })
+  //       });
+  // }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getNoti();
+      // getNoti();
     });
   }
 

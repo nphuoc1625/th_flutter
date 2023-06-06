@@ -44,8 +44,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       }
                     },
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.green),
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
                         shape: const MaterialStatePropertyAll(
                             RoundedRectangleBorder(
                                 borderRadius:
@@ -72,7 +71,10 @@ class _SignUpFormState extends State<SignUpForm> {
           border: OutlineInputBorder(),
           hintText: "Enter your email",
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          prefixIcon: Icon(Icons.mail)),
+          prefixIcon: Icon(
+            Icons.mail,
+            color: Colors.lightBlue,
+          )),
     );
   }
 
@@ -88,7 +90,7 @@ class _SignUpFormState extends State<SignUpForm> {
           border: OutlineInputBorder(),
           hintText: "Enter your password",
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          prefixIcon: Icon(Icons.password)),
+          prefixIcon: Icon(Icons.password, color: Colors.lightBlue)),
     );
   }
 
@@ -106,7 +108,7 @@ class _SignUpFormState extends State<SignUpForm> {
           border: OutlineInputBorder(),
           hintText: "Conform password",
           floatingLabelBehavior: FloatingLabelBehavior.always,
-          prefixIcon: Icon(Icons.password)),
+          prefixIcon: Icon(Icons.password, color: Colors.lightBlue)),
     );
   }
 

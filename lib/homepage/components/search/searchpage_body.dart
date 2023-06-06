@@ -1,6 +1,5 @@
-import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
-import 'package:th_flutter/DBHelper/productdb.dart';
+import 'package:th_flutter/Model/dbhelper.dart';
 
 import '../../../Model/product.dart';
 import '../../../Model/store.dart';
@@ -80,7 +79,7 @@ class _SearchPageBodyState extends State<SearchPageBody> {
       children: [
         Expanded(
           flex: 3,
-          child: ProductDB.getImage(store.imageName, 150, 150),
+          child: DBHelper.getImage(store.imageName, 150, 150),
         ),
         Expanded(
           flex: 7,
@@ -95,7 +94,7 @@ class _SearchPageBodyState extends State<SearchPageBody> {
       children: [
         Expanded(
           flex: 3,
-          child: ProductDB.getImage(product.imageName, 150, 150),
+          child: DBHelper.getImage(product.imageName, 150, 150),
         ),
         Expanded(
           flex: 7,
